@@ -5,7 +5,7 @@
 set :assets_dependencies, %w(app/assets lib/assets vendor/assets Gemfile.lock config/routes.rb)
 
 # clear the previous precompile task
-Rake::Task["deploy:assets:precompile"].clear_actions
+Rake::Task["deploy:assets:precompile"].clear
 class PrecompileRequired < StandardError;
 end
 
@@ -31,10 +31,10 @@ namespace :deploy do
               fetch(:assets_dependencies).each do |dep|
 		release = release_path.join(dep)
 		latest = latest_release_path.join(dep)
-		
+
 		# skip if both directories/files do not exist
 		next if [release, latest].map{|d| test "[ -e #{d} ]"}.uniq == [false]
-		
+
                 # execute raises if there is a diff
                 execute(:diff, '-Nqr', release, latest) rescue raise(PrecompileRequired)
               end
