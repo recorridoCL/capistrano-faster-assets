@@ -47,7 +47,7 @@ namespace :deploy do
               begin
                 execute(:test, '-L', release_asset_path.to_s)
               rescue
-                execute(:cp, '-Tr', latest_release_path.join('public', fetch(:assets_prefix)), release_asset_path.parent)
+                execute(:cp, '-Tr', latest_release_path.join('public', fetch(:assets_prefix)), release_asset_path)
               end
 
               # copy assets if manifest file is not exist (this is first deploy after using symlink)
