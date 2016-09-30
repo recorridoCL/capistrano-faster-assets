@@ -5,7 +5,7 @@
 set :assets_dependencies, %w(app/assets lib/assets vendor/assets Gemfile.lock config/routes.rb)
 
 # clear the previous precompile task
-Rake::Task["deploy:assets:precompile"].clear
+Rake::Task["deploy:assets:precompile"].clear_actions
 class PrecompileRequired < StandardError;
 end
 
@@ -47,7 +47,7 @@ namespace :deploy do
               begin
                 execute(:test, '-L', release_asset_path.to_s)
               rescue
-                execute(:cp, '-r', latest_release_path.join('public', fetch(:assets_prefix)), release_asset_path.parent)
+                execute(:cp, '-Tr', latest_release_path.join('public', fetch(:assets_prefix)), release_asset_path.parent)
               end
 
               # copy assets if manifest file is not exist (this is first deploy after using symlink)
